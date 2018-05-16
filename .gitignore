@@ -237,3 +237,7 @@ tmp.txt
 ## PyCharm
 #############
 .idea
+
+# jteoh: adding cvc4 local files
+CVC4.py
+_CVC4.so
