@@ -5,7 +5,7 @@ import re
 import os
 import sys
 from .invocation import FunctionInvocation
-from .symbolic_types import SymbolicInteger, getSymbolic
+from .symbolic_types import SymbolicInteger, SymbolicStr, getSymbolic
 
 # The built-in definition of len wraps the return value in an int() constructor, destroying any symbolic types.
 # By redefining len here we can preserve symbolic integer types.
@@ -56,6 +56,7 @@ class Loader:
 					Loader._initializeArgumentSymbolic(inv, f, v, s)
 		for a in argspec.args:
 			if not a in inv.getNames():
+				# TODO: try with different seed values and data types! (currently fixed to 0)
 				Loader._initializeArgumentSymbolic(inv, a, 0, SymbolicInteger)
 		return inv
 

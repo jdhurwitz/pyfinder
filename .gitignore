@@ -241,3 +241,4 @@ tmp.txt
 # jteoh: adding cvc4 local files
 CVC4.py
 _CVC4.so
+jteoh_setup.sh
