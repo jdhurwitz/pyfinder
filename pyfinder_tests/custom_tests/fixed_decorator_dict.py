@@ -1,11 +1,13 @@
 from symbolic.args import *
 
-@symbolic(d=dict([(42,6)]))
+
+@symbolic(d=dict([(42, 6)]))
 def fixed_decorator_dict(d):
-	if d[42] == 6:
-		return 0
-	else:
-		return 1
+    if d[42] == 6:
+        return 0
+    else:
+        return 1
+
 
 def expected_result():
-	return [0, 1]
+    return [0, 1]

@@ -1,5 +1,6 @@
 from symbolic.args import *
 
+
 # This test has to be run with the --cvc flag
 # because PyExZ3 does not support None.
 # This test fails because CVC is unable to infer
@@ -17,7 +18,7 @@ from symbolic.args import *
 def fixed_none(c):
     if c == None:
         return 1
-    else: #if c != None:
+    else:  # if c != None:
         return 0
 
 

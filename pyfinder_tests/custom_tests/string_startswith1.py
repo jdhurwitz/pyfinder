@@ -1,5 +1,6 @@
 from symbolic.args import *
 
+
 # This test has to be run with the --cvc flag
 # This is one of 4 test cases. We compare using:
 # a.startswith("Hello World")
@@ -9,12 +10,11 @@ from symbolic.args import *
 # somehow knows to try "Hello World" as input?
 @symbolic(a="xyz")
 def string_startswith1(a):
-	if (a.startswith("Hello World")):
-		return "foo"
-	else:
-		return "bar"
+    if (a.startswith("Hello World")):
+        return "foo"
+    else:
+        return "bar"
 
 
 def expected_result():
-	return [ "foo", "bar" ]
-
+    return ["foo", "bar"]

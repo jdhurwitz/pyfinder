@@ -10,13 +10,12 @@ from symbolic.args import *
 # somehow knows to try the empty string as input?
 @symbolic(a="Hello World lorem ipsum")
 def string_startswith2(a):
-	if (a.startswith("Hello World")):
-	# if ("Hello World".startswith(a)):
-		return "foo"
-	else:
-		return "bar"
+    if (a.startswith("Hello World")):
+        # if ("Hello World".startswith(a)):
+        return "foo"
+    else:
+        return "bar"
 
 
 def expected_result():
-	return [ "foo", "bar" ]
-
+    return ["foo", "bar"]
