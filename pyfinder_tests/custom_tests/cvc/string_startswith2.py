@@ -5,12 +5,14 @@ from symbolic.args import *
 # This is one of 4 test cases. We compare using:
 # a.startswith("Hello World")
 # Here we seed a symbolic
-# string that fits in the second branch. This succeeds
+# string that fits in the first branch. This succeeds
 # for reasons not entirely known - it seems like CVC
-# somehow knows to try "Hello World" as input?
-@symbolic(a="xyz")
-def string_startswith1(a):
+# somehow knows to try the empty string as input?
+# update jteoh: see *1.py
+@symbolic(a="Hello World lorem ipsum")
+def string_startswith2(a):
     if (a.startswith("Hello World")):
+        # if ("Hello World".startswith(a)):
         return "foo"
     else:
         return "bar"

@@ -5,7 +5,7 @@
 # which was specifically imported for test/dictionary.py
 # and implements a has_key method.
 # the 'in' method in python will call __contains__
-# which is on the dictionary. Without somehow capturing
+# which is on a concrete dictionary. Without somehow capturing
 # information about the dictionary or wrapping it into
 # a specialized class, we can't override __contains__ to
 # capture the fact that a symbolic value is passed in.
@@ -16,7 +16,11 @@
 from symbolic.args import *
 
 
-# @symbolic(in1=3) # including this allows for passing.
+# @symbolic(in1=3) # including this allows for passing
+# why? jteoh suspects that the __contains__ method will
+# try calling == for each key and in1, which passes because
+# __eq__ is not implemented for symbolic types and python will
+# swap arguments (commutative) to call the symbolic.__eq__ fn
 def dictionary_index(in1):
     d = {}
     d[3] = 10

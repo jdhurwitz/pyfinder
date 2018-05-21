@@ -7,6 +7,7 @@ from symbolic.args import *
 # use identity checks.
 # An alternative would be to use effective booleans - that's
 # covered in test/cvc/effectivebool.py
+@symbolic(a=True) # even this still fails, because a is cast to a SymbolicInt
 def boolean(a):
     if a is True:
         return 0

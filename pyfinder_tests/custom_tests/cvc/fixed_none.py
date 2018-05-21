@@ -12,7 +12,7 @@ from symbolic.args import *
 # but the else condition here is not explicit
 # (compared to a != None) and the expected
 # generated input correctly includes a case
-# for the first branch.
+# for the first branch (not included in none.py)
 # We can actually remove this and rely on test/cvc/none.py
 # if we fix it accordingly.
 def fixed_none(c):

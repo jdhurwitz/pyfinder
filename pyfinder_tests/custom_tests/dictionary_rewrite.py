@@ -14,7 +14,7 @@ def dictionary_rewrite(in1):
     # Here we're looking if in1 matches a key, so
     # we create a list of all the keys that do match... but this could be very
     # inefficient depending on python implementation.
-    # jteoh later added: if I'm understanding write, python should use the iter
+    # jteoh later added: if I'm understanding right, python should use the iter
     # functionality if applicable, in which case this is reasonably acceptable.
     if in1 in [j for j in d.keys() if in1 == j]:
         return 1
