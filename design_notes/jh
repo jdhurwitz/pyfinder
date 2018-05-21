@@ -1,0 +1,5 @@
+JH design notes
+
+
+/Users/Jonny/Documents/UCLA/CS230/pyfinder/symbolic/symbolic_types
+-Does not have list support, and many of the 99 python probs are list-based functions
