@@ -7,6 +7,8 @@ from symbolic.args import *
 # Here we seed a symbolic string that fits in the
 # first branch. Unlike the 2st test case, an empty
 # input "" would still fit in the first test case.
+# later update (jteoh): see string_startswith3.py to
+# help explain this behavior.
 @symbolic(a="Hello")
 def string_startswith4(a):
     if ("Hello World".startswith(a)):
