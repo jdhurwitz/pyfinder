@@ -242,3 +242,7 @@ tmp.txt
 CVC4.py
 _CVC4.so
 jteoh_setup.sh
+
+# adding jonathan's setup script too
+setup_jh.sh
+
