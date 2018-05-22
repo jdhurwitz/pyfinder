@@ -12,6 +12,9 @@ from .symbolic_types import SymbolicInteger, SymbolicStr, getSymbolic
 import builtins
 builtins.len = (lambda x : x.__len__())
 
+# used to determine if a value is hashable, for expected output comparison. 
+import collections
+
 class Loader:
 	def __init__(self, filename, entry):
 		self._fileName = os.path.basename(filename)
@@ -101,6 +104,8 @@ class Loader:
 	def _toBag(self,l):
 		bag = {}
 		for i in l:
+			if not isinstance(i, collections.Hashable):
+				i = str(i)
 			if i in bag:
 				bag[i] += 1
 			else:
