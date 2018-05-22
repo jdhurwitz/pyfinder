@@ -105,6 +105,7 @@ class Loader:
 		bag = {}
 		for i in l:
 			if not isinstance(i, collections.Hashable):
+				print(i, str(i))
 				i = str(i)
 			if i in bag:
 				bag[i] += 1

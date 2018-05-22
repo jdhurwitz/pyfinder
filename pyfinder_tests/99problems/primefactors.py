@@ -1,7 +1,7 @@
 import itertools
 
-#TODO: not sure why this fails?
-@symbolic(n=315)
+#JH: Fails because list is unhashable. Sol'n would be to deal with tuples
+#TODO: convert to tuples recursively in loader.py
 def prime_factors(value):
     """ trial divisions are all primes because of previous reductions of value
         print list(factors(1234567890987654321))
@@ -13,9 +13,10 @@ def prime_factors(value):
                 if value == this: break
                 value /=  this
                 yield this
-    return (value)
+    yield value
 
-def prime_factors_mult(n):
+@symbolic(n=315)
+def primefactors(n):
     """return list [ [p_0,k_0], [p_1,k_1], ... ], where there are 'k_i'
     occurrences of 'p_i' in the prime factorization of n.
 
@@ -23,9 +24,10 @@ def prime_factors_mult(n):
     [[3, 2], [5, 1], [7, 1]]
     """
     res = list(prime_factors(n))
-    return sorted([fact, res.count(fact)] for fact in set(res))
+    return sorted([int(fact), res.count(fact)] for fact in set(res))
 
 
 def expected_result():
     return [[3, 2], [5, 1], [7, 1]]
 
+#print(primefactors(315))
