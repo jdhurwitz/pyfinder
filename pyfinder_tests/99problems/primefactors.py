@@ -1,5 +1,5 @@
 import itertools
-
+from symbolic.args import *
 #JH: Fails because list is unhashable. Sol'n would be to deal with tuples
 #TODO: convert to tuples recursively in loader.py
 def prime_factors(value):
