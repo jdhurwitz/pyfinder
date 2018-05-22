@@ -4,6 +4,8 @@ import inspect
 import re
 import os
 import sys
+
+from .ast_rewriter import ASTRewriter
 from .invocation import FunctionInvocation
 from .symbolic_types import SymbolicInteger, SymbolicStr, getSymbolic
 
@@ -15,6 +17,8 @@ builtins.len = (lambda x : x.__len__())
 # used to determine if a value is hashable, for expected output comparison. 
 import collections
 
+
+
 class Loader:
 	def __init__(self, filename, entry):
 		self._fileName = os.path.basename(filename)
@@ -25,6 +29,8 @@ class Loader:
 			self._entryPoint = entry;
 		self._resetCallback(True)
 
+		self.ast_rewriter = ASTRewriter()
+
 	def getFile(self):
 		return self._fileName
 
@@ -34,6 +40,7 @@ class Loader:
 	def createInvocation(self):
 		inv = FunctionInvocation(self._execute,self._resetCallback)
 		func = self.app.__dict__[self._entryPoint]
+		func = self._rewrite_AST(func)
 		argspec = inspect.getargspec(func)
 		# check to see if user specified initial values of arguments
 		if "concrete_args" in func.__dict__:
@@ -122,6 +129,9 @@ class Loader:
 		else:
 			print("%s test passed <---" % self._fileName)
 			return True
+
+	def _rewrite_AST(self, func):
+		return self.ast_rewriter.rewrite(func)
 	
 def loaderFactory(filename,entry):
 	if not os.path.isfile(filename) or not re.search(".py$",filename):
