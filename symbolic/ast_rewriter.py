@@ -6,7 +6,7 @@ import inspect
 
 # sample command:
 # python pyexz3.py pyfinder_tests/custom_tests/cvc/string_startswith3.py  --cvc
-# Ideally: we want to identify
+# TODO: check and redefine other function calls as needed?
 from symbolic.symbolic_types import SymbolicType, SymbolicStr
 
 
@@ -53,12 +53,13 @@ class ASTRewriter:
         def visit(self, node):
             # visit children first
             self.generic_visit(node)
-            if (self.isWrappableType(node)):
+            if (self.is_wrappable_type(node)):
                 # print(ast.dump(node, annotate_fields=False))
                 # Call takes 5 args:
                 # func (in this case, the SymbolicType constructor)
                 # args (in this case, fixed object name + the original string we want to wrap)
                 # keywords, starargs, kwargs -> all empty for this usage.
+                symbolic_classname = self.get_symbolic_class(node).__name__
                 result = ast.Call(ast.Name(SymbolicStr.__name__, ast.Load()),
                                 [self.CONCRETE_WRAPPER_STR, node],
                                 [], None, None)
@@ -67,9 +68,17 @@ class ASTRewriter:
             else:
                 return node
 
-        def isWrappableType(self, node):
+        def is_wrappable_type(self, node):
             # TODO add the others
-            return isinstance(node, ast.Str) and node.s=="Hello World"
+            return isinstance(node, ast.Str)
+
+        def get_symbolic_class(self, node):
+            assert(self.is_wrappable_type(node))
+            if isinstance(node, ast.Str):
+                return SymbolicStr
+            else:
+                raise Exception("Wrappable constant type does not have corresponding symbolic class: " + str(type(node)))
+
 
     class FunctionDefRenamer(ast.NodeTransformer):
         """ Unused - useful if you want to rename function defs (which don't seem necessary here) """
