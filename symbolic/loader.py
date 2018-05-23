@@ -20,16 +20,22 @@ import collections
 
 
 class Loader:
-	def __init__(self, filename, entry):
+	def __init__(self, filename, entry, ast_rewrite_enabled):
 		self._fileName = os.path.basename(filename)
 		self._fileName = self._fileName[:-3]
 		if (entry == ""):
 			self._entryPoint = self._fileName
 		else:
 			self._entryPoint = entry;
+
+		self.ast_rewrite_enabled = ast_rewrite_enabled
+		if(self.ast_rewrite_enabled):
+			print("Using PyFinder AST rewriter")
+			self.ast_rewriter = ASTRewriter()
+
 		self._resetCallback(True)
 
-		self.ast_rewriter = ASTRewriter()
+
 
 	def getFile(self):
 		return self._fileName
@@ -40,7 +46,6 @@ class Loader:
 	def createInvocation(self):
 		inv = FunctionInvocation(self._execute,self._resetCallback)
 		func = self.app.__dict__[self._entryPoint]
-		func = self._rewrite_AST(func)
 		argspec = inspect.getargspec(func)
 		# check to see if user specified initial values of arguments
 		if "concrete_args" in func.__dict__:
@@ -70,6 +75,7 @@ class Loader:
 				Loader._initializeArgumentSymbolic(inv, a, 0, SymbolicInteger)
 		return inv
 
+
 	# need these here (rather than inline above) to correctly capture values in lambda
 	def _initializeArgumentConcrete(inv,f,val):
 		inv.addArgumentConstructor(f, val, lambda n,v: val)
@@ -97,6 +103,9 @@ class Loader:
 			if (not firstpass and self._fileName in sys.modules):
 				del(sys.modules[self._fileName])
 			self.app =__import__(self._fileName)
+			# jteoh: not sure exactly why PyExZ3 reimports each time, but
+			# rewrite the function each time since we do a clean import
+			self._rewrite_AST()
 			if not self._entryPoint in self.app.__dict__ or not callable(self.app.__dict__[self._entryPoint]):
 				print("File " +  self._fileName + ".py doesn't contain a function named " + self._entryPoint)
 				raise ImportError()
@@ -130,17 +139,19 @@ class Loader:
 			print("%s test passed <---" % self._fileName)
 			return True
 
-	def _rewrite_AST(self, func):
-		return self.ast_rewriter.rewrite(func)
-	
-def loaderFactory(filename,entry):
+	def _rewrite_AST(self):#, func, entryPoint, namespace):
+		if(self.ast_rewrite_enabled):
+			func = self.app.__dict__[self._entryPoint]
+			self.app.__dict__[self._entryPoint] = self.ast_rewriter.rewrite(func, self._entryPoint, self.app.__dict__)
+
+def loaderFactory(filename,entry, ast_rewrite_enabled):
 	if not os.path.isfile(filename) or not re.search(".py$",filename):
 		print("Please provide a Python file to load")
 		return None
 	try: 
 		dir = os.path.dirname(filename)
 		sys.path = [ dir ] + sys.path
-		ret = Loader(filename,entry)
+		ret = Loader(filename,entry, ast_rewrite_enabled)
 		return ret
 	except ImportError:
 		sys.path = sys.path[1:]

@@ -8,9 +8,15 @@ import functools
 # it also tracks the corresponding concrete value for the expression (aka concolic execution)
 
 class SymbolicType(object):
+	# Pyfinder constant to help identify symbolic types that are created solely to wrap program constants.
+	# TODO consider adding this as a flag rather than a predefined object name.
+	CONCRETE_WRAPPER_NAME = "_pyfinder_constant"
+
 	def __init__(self, name, expr=None):
 		self.name = name
 		self.expr = expr
+		# make sure concrete wrappers do not have an expr
+		assert(not (self.isConcreteWrapper() and self.expr != None))
 
 	# to be provided by subclass
 
@@ -22,12 +28,19 @@ class SymbolicType(object):
 
 	# public funs
 
+	# jteoh: addt'l flag to determine if this is really just a symbolic wrapper around a program constant.
+	def isConcreteWrapper(self):
+		return self.name == self.CONCRETE_WRAPPER_NAME
+
 	def isVariable(self):
-		return self.expr == None
+		return self.expr == None and not self.isConcreteWrapper()
 
 	def unwrap(self):
 		if self.isVariable():
 			return (self.getConcrValue(),self)
+		elif self.isConcreteWrapper():
+			# for symbolic execution/ATP purposes, use the concrete value.
+			return (self.getConcrValue(), self.getConcrValue())
 		else:
 			return (self.getConcrValue(),self.expr)
 

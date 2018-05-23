@@ -22,6 +22,8 @@ parser.add_option("-g", "--graph", dest="dot_graph", action="store_true", help="
 parser.add_option("-m", "--max-iters", dest="max_iters", type="int", help="Run specified number of iterations", default=0)
 parser.add_option("--cvc", dest="cvc", action="store_true", help="Use the CVC SMT solver instead of Z3", default=False)
 parser.add_option("--z3", dest="cvc", action="store_false", help="Use the Z3 SMT solver")
+parser.add_option("--disable_ast_rewrite", dest="ast_rewrite_enabled", action="store_false", default=True,
+				  help="Disable AST rewriting of application program")
 
 (options, args) = parser.parse_args()
 
@@ -37,7 +39,7 @@ solver = "cvc" if options.cvc else "z3"
 filename = os.path.abspath(args[0])
 	
 # Get the object describing the application
-app = loaderFactory(filename,options.entry)
+app = loaderFactory(filename,options.entry, options.ast_rewrite_enabled)
 if app == None:
 	sys.exit(1)
 
