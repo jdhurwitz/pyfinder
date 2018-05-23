@@ -6,7 +6,9 @@ import inspect
 
 # sample command:
 # python pyexz3.py pyfinder_tests/custom_tests/cvc/string_startswith3.py  --cvc
-# TODO: check and redefine other function calls as needed?
+# TODO: check and redefine other function calls as needed, eg non_entry_function_call.py
+# Approach: recursively visit AST and call rewrite on Name(<non-symbolic-type>), Load()).
+# What do we do if this is actually a variable as opposed to a function? Need to wrap that too...
 from symbolic.symbolic_types import SymbolicType, SymbolicStr
 
 
@@ -16,6 +18,7 @@ class ASTRewriter:
 
     def rewrite(self, func, entryPoint, namespace):
         src_str = inspect.getsource(func)
+        # print(src_str)
         root = ast.parse(src_str)
         # print("Full ast dump")
         # print(ast.dump(root))
