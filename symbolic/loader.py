@@ -103,12 +103,12 @@ class Loader:
 			if (not firstpass and self._fileName in sys.modules):
 				del(sys.modules[self._fileName])
 			self.app =__import__(self._fileName)
-			# jteoh: not sure exactly why PyExZ3 reimports each time, but
-			# rewrite the function each time since we do a clean import
-			self._rewrite_AST()
 			if not self._entryPoint in self.app.__dict__ or not callable(self.app.__dict__[self._entryPoint]):
 				print("File " +  self._fileName + ".py doesn't contain a function named " + self._entryPoint)
 				raise ImportError()
+			# jteoh: not sure exactly why PyExZ3 reimports each time, but
+			# rewrite the function each time since we do a clean import
+			self._rewrite_AST()
 		except Exception as arg:
 			print("Couldn't import " + self._fileName)
 			print(arg)
@@ -141,8 +141,7 @@ class Loader:
 
 	def _rewrite_AST(self):#, func, entryPoint, namespace):
 		if(self.ast_rewrite_enabled):
-			func = self.app.__dict__[self._entryPoint]
-			self.app.__dict__[self._entryPoint] = self.ast_rewriter.rewrite(func, self._entryPoint, self.app.__dict__)
+			self.app.__dict__[self._entryPoint] = self.ast_rewriter.rewrite(self._entryPoint, self.app.__dict__)
 
 def loaderFactory(filename,entry, ast_rewrite_enabled):
 	if not os.path.isfile(filename) or not re.search(".py$",filename):
