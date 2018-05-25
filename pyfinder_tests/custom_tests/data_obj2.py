@@ -6,11 +6,11 @@ from symbolic.args import *
 from pyfinder_tests.custom_tests.data_obj import DataObj
 
 
-@symbolic(a=DataObj("foo"))
-def data_obj(a):
-    if a == "foo":
+@symbolic(a=DataObj(100))
+def data_obj2(a):
+    if a.value == 0:
         return 0
-    elif a == "bar":
+    elif a.value == 100:
         return 1
     else:
         return 2

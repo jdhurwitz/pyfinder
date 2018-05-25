@@ -11,11 +11,11 @@ class DataObj:
 
 # This fails because there is no general symbolic type for data objects.
 # (it won't even run, with either solver)
-@symbolic(a=DataObj("foo"))
+@symbolic(a=DataObj(100))
 def data_obj(a):
-    if a == "foo":
+    if a.value == 0:
         return 0
-    elif a == "bar":
+    elif a.value == 100:
         return 1
     else:
         return 2
