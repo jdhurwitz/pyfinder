@@ -16,6 +16,7 @@ def dictionary_rewrite(in1):
     # inefficient depending on python implementation.
     # jteoh later added: if I'm understanding right, python should use the iter
     # functionality if applicable, in which case this is reasonably acceptable.
+    # jteoh 5-24-2018: actually, the in1 == j section isn't strictly required.
     if in1 in [j for j in d.keys() if in1 == j]:
         return 1
     else:
