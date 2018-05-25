@@ -24,6 +24,7 @@ parser.add_option("--cvc", dest="cvc", action="store_true", help="Use the CVC SM
 parser.add_option("--z3", dest="cvc", action="store_false", help="Use the Z3 SMT solver")
 parser.add_option("--disable_ast_rewrite", dest="ast_rewrite_enabled", action="store_false", default=True,
 				  help="Disable AST rewriting of application program")
+parser.add_option("--debug_ast", dest="debug_ast", action="store_true", default=False, help="Print AST during rewrite")
 
 (options, args) = parser.parse_args()
 
@@ -39,7 +40,7 @@ solver = "cvc" if options.cvc else "z3"
 filename = os.path.abspath(args[0])
 	
 # Get the object describing the application
-app = loaderFactory(filename,options.entry, options.ast_rewrite_enabled)
+app = loaderFactory(filename,options.entry, options.ast_rewrite_enabled, options.debug_ast)
 if app == None:
 	sys.exit(1)
 

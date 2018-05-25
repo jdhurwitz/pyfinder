@@ -1,12 +1,19 @@
 # used to do AST rewrites.
 import ast
 import inspect
+try:
+    # try to import astpretty if installed
+    import astpretty
+except:
+    pass
+import sys
 
 # sample command:
 # python pyexz3.py pyfinder_tests/custom_tests/cvc/string_startswith3.py  --cvc
 # TODO: check and redefine other function calls as needed, eg non_entry_function_call.py
 # Approach: recursively visit AST and call rewrite on Name(<non-symbolic-type>), Load()).
 # What do we do if this is actually a variable as opposed to a function? Need to wrap that too...
+# Alternative (current) approach: only target the input file and give up on anything external.
 from symbolic.symbolic_types import SymbolicType, SymbolicStr
 
 # Strongly recommend https://greentreesnakes.readthedocs.io/en/latest/ for
@@ -15,9 +22,6 @@ class ASTRewriter:
     def __init__(self, debug=False):
         self.debug = debug
         pass
-    # functions we need to import, and also avoid rewriting
-    import symbolic.symbolic_types as pyfinder_symbolic_types
-    pyfinder_symbolic_dict = pyfinder_symbolic_types.__dict__
 
     def rewrite_file(self, file, outfile):
         print("Rewriting " + str(file) + " to " + str(outfile))
@@ -28,19 +32,23 @@ class ASTRewriter:
             self.ProgramLiteralWrapper().visit(root)
             ast.fix_missing_locations(root)
 
-            self.pprint(root)
+            self.ast_print(root)
 
             self.convert_ast_to_file(outfile, root)
 
     def convert_ast_to_file(self, outfile, root):
         with open(outfile, 'w+') as out:
             # need to add required imports here
+            # duplicate imports are fine, so no worries there.
             out.write("from symbolic.symbolic_types import *\n")
             from .unparse import Unparser
             Unparser(root, file=out)
 
     def rewrite(self, entryPoint, global_namespace):
-        global_namespace.update(self.__class__.pyfinder_symbolic_dict)
+        # functions we need to import for compilation
+        import symbolic.symbolic_types as pyfinder_symbolic_types
+        pyfinder_symbolic_dict = pyfinder_symbolic_types.__dict__
+        global_namespace.update(pyfinder_symbolic_dict)
         return self._rewrite(entryPoint, global_namespace, {})
 
     def _rewrite(self, entryPoint, global_namespace, local_namespace):
@@ -91,13 +99,14 @@ class ASTRewriter:
         return local_namespace[entryPoint]
         # return func
 
-    def pprint(self, ast):
-        if self.debug:
-            try:
-                import astpretty
-                astpretty.pprint(ast)
-            except ImportError:
-                pass
+    if 'astpretty' in sys.modules:
+        def ast_print(self, ast_node):
+            if self.debug:
+                astpretty.pprint(ast_node)
+    else:
+        def ast_print(self, ast_node):
+            print(ast.dump(ast_node, annotate_fields=False))
+
 
 
 

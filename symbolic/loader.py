@@ -20,7 +20,7 @@ import collections
 
 
 class Loader:
-	def __init__(self, filename, entry, ast_rewrite_enabled):
+	def __init__(self, filename, entry, ast_rewrite_enabled, debug_ast):
 		self._fileName = os.path.basename(filename)
 		self._fileName = self._fileName[:-3]
 		if (entry == ""):
@@ -32,7 +32,7 @@ class Loader:
 
 		if(self.ast_rewrite_enabled):
 			print("Using PyFinder AST rewriter")
-			self.ast_rewriter = ASTRewriter()
+			self.ast_rewriter = ASTRewriter(debug_ast)
 			rewritten_file = "rewritten_program.py"
 			self.ast_rewriter.rewrite_file(filename, rewritten_file)  # temp dev line
 			self._fileName = rewritten_file[:-3] # remove the ".py" suffix
@@ -152,14 +152,14 @@ class Loader:
 		if(self.ast_rewrite_enabled):
 			self.app.__dict__[self._entryPoint] = self.ast_rewriter.rewrite(self._entryPoint, self.app.__dict__)
 
-def loaderFactory(filename,entry, ast_rewrite_enabled):
+def loaderFactory(filename,entry, ast_rewrite_enabled, debug_ast):
 	if not os.path.isfile(filename) or not re.search(".py$",filename):
 		print("Please provide a Python file to load")
 		return None
 	try: 
 		dir = os.path.dirname(filename)
 		sys.path = [ dir ] + sys.path
-		ret = Loader(filename,entry, ast_rewrite_enabled)
+		ret = Loader(filename,entry, ast_rewrite_enabled, debug_ast)
 		return ret
 	except ImportError:
 		sys.path = sys.path[1:]
