@@ -243,6 +243,9 @@ CVC4.py
 _CVC4.so
 jteoh_setup.sh
 
+# add rewritten program file
+rewritten_program.py
+
 # adding jonathan's setup script too
 setup_jh.sh
 

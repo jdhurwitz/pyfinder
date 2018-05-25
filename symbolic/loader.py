@@ -29,9 +29,14 @@ class Loader:
 			self._entryPoint = entry;
 
 		self.ast_rewrite_enabled = ast_rewrite_enabled
+
 		if(self.ast_rewrite_enabled):
 			print("Using PyFinder AST rewriter")
 			self.ast_rewriter = ASTRewriter()
+			rewritten_file = "rewritten_program.py"
+			self.ast_rewriter.rewrite_file(filename, rewritten_file)  # temp dev line
+			self._fileName = rewritten_file[:-3] # remove the ".py" suffix
+
 
 		self._resetCallback(True)
 
@@ -106,9 +111,13 @@ class Loader:
 			if not self._entryPoint in self.app.__dict__ or not callable(self.app.__dict__[self._entryPoint]):
 				print("File " +  self._fileName + ".py doesn't contain a function named " + self._entryPoint)
 				raise ImportError()
+
+			# jteoh: update 5-24, trying new process of rewriting a new file, which means we don't need to
+			# do an AST rewrite each time.
 			# jteoh: not sure exactly why PyExZ3 reimports each time, but
 			# rewrite the function each time since we do a clean import
-			self._rewrite_AST()
+			#self._rewrite_AST()
+
 		except Exception as arg:
 			print("Couldn't import " + self._fileName)
 			print(arg)

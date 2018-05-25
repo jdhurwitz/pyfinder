@@ -1,7 +1,5 @@
 # used to do AST rewrites.
 import ast
-from pprint import pprint
-
 import inspect
 
 # sample command:
@@ -14,12 +12,32 @@ from symbolic.symbolic_types import SymbolicType, SymbolicStr
 # Strongly recommend https://greentreesnakes.readthedocs.io/en/latest/ for
 # using the AST library
 class ASTRewriter:
-    def __init__(self):
+    def __init__(self, debug=False):
+        self.debug = debug
         pass
     # functions we need to import, and also avoid rewriting
     import symbolic.symbolic_types as pyfinder_symbolic_types
     pyfinder_symbolic_dict = pyfinder_symbolic_types.__dict__
 
+    def rewrite_file(self, file, outfile):
+        print("Rewriting " + str(file) + " to " + str(outfile))
+        # TODO would need to add required imports, eg Symbolic types
+        # keep in mind this needs to be done relative to the file path too?
+        with open(file) as inp:
+            root = ast.parse(inp.read())
+            self.ProgramLiteralWrapper().visit(root)
+            ast.fix_missing_locations(root)
+
+            self.pprint(root)
+
+            self.convert_ast_to_file(outfile, root)
+
+    def convert_ast_to_file(self, outfile, root):
+        with open(outfile, 'w+') as out:
+            # need to add required imports here
+            out.write("from symbolic.symbolic_types import *\n")
+            from .unparse import Unparser
+            Unparser(root, file=out)
 
     def rewrite(self, entryPoint, global_namespace):
         global_namespace.update(self.__class__.pyfinder_symbolic_dict)
@@ -30,6 +48,11 @@ class ASTRewriter:
         src_str = inspect.getsource(func)
         # print(src_str)
         root = ast.parse(src_str)
+
+        # import astpretty
+        # print(astpretty.pformat(root),file=open("temp.out","w+"))
+
+
         # print("Full ast dump")
         # print(ast.dump(root))
         # print("-"*10)
@@ -61,9 +84,22 @@ class ASTRewriter:
         # each time, so we also need to re-import our symbolic types each time.
         exec(compile(root, filename="<ast>", mode="exec"), global_namespace, local_namespace)
 
+        #from .unparse import Unparser
+        #Unparser(root)
+
         # alt: write an expression ast to get this function
         return local_namespace[entryPoint]
         # return func
+
+    def pprint(self, ast):
+        if self.debug:
+            try:
+                import astpretty
+                astpretty.pprint(ast)
+            except ImportError:
+                pass
+
+
 
     # useful(?) resource: https://eli.thegreenplace.net/2009/11/28/python-internals-working-with-python-asts
     # This technically wraps all constants, including those in decorators.
@@ -84,7 +120,7 @@ class ASTRewriter:
                 # args (in this case, fixed object name + the original string we want to wrap)
                 # keywords, starargs, kwargs -> all empty for this usage.
                 symbolic_classname = self.get_symbolic_class(node).__name__
-                result = ast.Call(ast.Name(SymbolicStr.__name__, ast.Load()),
+                result = ast.Call(ast.Name(symbolic_classname, ast.Load()),
                                 [self.CONCRETE_WRAPPER_STR, node],
                                 [], None, None)
                 # print(ast.dump(result, annotate_fields=False))
