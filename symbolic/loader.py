@@ -5,9 +5,9 @@ import re
 import os
 import sys
 
-from .ast_rewriter import ASTRewriter
+from symbolic.ast_rewriter.ast_rewriter import ASTRewriter
 from .invocation import FunctionInvocation
-from .symbolic_types import SymbolicInteger, SymbolicStr, getSymbolic
+from .symbolic_types import SymbolicInteger, getSymbolic
 
 # The built-in definition of len wraps the return value in an int() constructor, destroying any symbolic types.
 # By redefining len here we can preserve symbolic integer types.
