@@ -1,4 +1,5 @@
 from itertools import groupby
+from symbolic.args import *
 
 #JH: this fails because of lack of symbolic list support
 @symbolic(aList=[1,1,2,2,3,3])

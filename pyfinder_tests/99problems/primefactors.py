@@ -24,10 +24,11 @@ def primefactors(n):
     [[3, 2], [5, 1], [7, 1]]
     """
     res = list(prime_factors(n))
-    return sorted([int(fact), res.count(fact)] for fact in set(res))
+    val =  sorted([int(fact), res.count(fact)] for fact in set(res))
+    return val
 
 
 def expected_result():
-    return [[3, 2], [5, 1], [7, 1]]
+    return  {'[[3, 2], [5, 1], [7, 1]]': 1, '[[0, 1]]': 1, '[[2, 1], [7, 1]]': 1, '[[5, 1]]': 1, '[[13, 1]]': 1}
 
 #print(primefactors(315))

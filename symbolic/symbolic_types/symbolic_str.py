@@ -44,10 +44,14 @@ class SymbolicStr(SymbolicObject, str):
         return self._do_sexpr([self, key], lambda x, y: str.__getitem__(x, y),
                               "getitem", SymbolicStr.wrap)
 
+#  TODO: start with endswith, isalpha (scope these out)
+
     def find(self, findstr, beg=0):
         return self._do_sexpr([self, findstr, beg],
                               lambda x, y, z: str.find(x, y, z),
                               "str.find", SymbolicInteger.wrap)
+
+
 
     def startswith(self, prefix):
         return self._do_sexpr([self, prefix],
