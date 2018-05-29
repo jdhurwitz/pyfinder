@@ -8,6 +8,7 @@ from optparse import OptionParser
 
 from symbolic.loader import *
 from symbolic.explore import ExplorationEngine
+from symbolic.test_suite_generator import test_suite_generator
 
 print("PyExZ3 (Python Exploration with Z3)")
 
@@ -25,6 +26,7 @@ parser.add_option("--z3", dest="cvc", action="store_false", help="Use the Z3 SMT
 parser.add_option("--disable_ast_rewrite", dest="ast_rewrite_enabled", action="store_false", default=True,
 				  help="Disable AST rewriting of application program")
 parser.add_option("--debug_ast", dest="debug_ast", action="store_true", default=False, help="Print AST during rewrite")
+parser.add_option("--generate_test_suite", dest="test_suite_enabled", action="store_true", default=False, help="Generage a python test suite file")
 
 (options, args) = parser.parse_args()
 
@@ -52,6 +54,10 @@ try:
 	generatedInputs, returnVals, path = engine.explore(options.max_iters)
 	# check the result
 	result = app.executionComplete(returnVals)
+
+	#output test suite
+	if (options.test_suite_enabled):
+		test_suite_generator(app.getFile(),app.getEntry(), generatedInputs, returnVals)
 
 	# output DOT graph
 	if (options.dot_graph):
