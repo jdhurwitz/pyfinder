@@ -23,7 +23,7 @@ parser.add_option("-g", "--graph", dest="dot_graph", action="store_true", help="
 parser.add_option("-m", "--max-iters", dest="max_iters", type="int", help="Run specified number of iterations", default=0)
 parser.add_option("--cvc", dest="cvc", action="store_true", help="Use the CVC SMT solver instead of Z3", default=False)
 parser.add_option("--z3", dest="cvc", action="store_false", help="Use the Z3 SMT solver")
-parser.add_option("--disable_ast_rewrite", dest="ast_rewrite_enabled", action="store_false", default=True,
+parser.add_option("--rewrite_ast", dest="ast_rewrite_enabled", action="store_true", default=False,
 				  help="Disable AST rewriting of application program")
 parser.add_option("--debug_ast", dest="debug_ast", action="store_true", default=False, help="Print AST during rewrite")
 parser.add_option("--generate_test_suite", dest="test_suite_enabled", action="store_true", default=False, help="Generage a python test suite file")
