@@ -250,4 +250,12 @@ rewritten_program.py
 setup_jh.sh
 
 .vscode
+
+# omit automatically generated test suite files
+generated_test_suites
+
+# omit coverage.py html coverage folder
+htmlcov
+
+# omit pyenv specific version file
 .python-version

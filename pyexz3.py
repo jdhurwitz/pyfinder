@@ -57,7 +57,7 @@ try:
 
 	#output test suite
 	if (options.test_suite_enabled):
-		test_suite_generator(app.getFile(),app.getEntry(), generatedInputs, returnVals)
+		test_suite_generator(app.getFullFilePath(),app.getEntry(), generatedInputs, returnVals)
 
 	# output DOT graph
 	if (options.dot_graph):

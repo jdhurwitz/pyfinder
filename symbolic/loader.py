@@ -21,6 +21,7 @@ import collections
 
 class Loader:
 	def __init__(self, filename, entry, ast_rewrite_enabled, debug_ast):
+		self._fullFileName=filename
 		self._fileName = os.path.basename(filename)
 		self._fileName = self._fileName[:-3]
 		if (entry == ""):
@@ -44,6 +45,9 @@ class Loader:
 
 	def getFile(self):
 		return self._fileName
+
+	def getFullFilePath(self):
+		return self._fullFileName
 
 	def getEntry(self):
 		return self._entryPoint
