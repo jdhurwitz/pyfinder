@@ -246,3 +246,5 @@ jteoh_setup.sh
 # adding jonathan's setup script too
 setup_jh.sh
 
+.vscode
+.python-version
