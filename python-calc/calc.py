@@ -162,6 +162,8 @@ def run(string):
 	'''
 	
 	#-- Until we don't find more operators in the string we keep looping --
+	# jteoh: added to prevent premature return, but in practice we should have a check here?
+	result = string
 	while still_operators(string):
 
 		operation = next_operator(string)
@@ -294,16 +296,19 @@ def calc(a):
 	#line = normalize_operators(a)
 	#line = normalize_numbers(line)
 	line = a.replace(' ','')
+	if len(line) == 0:
+		return ""
+
 
 	# -- Validate --
 	# -- First value can only by (-) minus symbol or (+) plus symbol --
 	if line[0] in ['*', '/']:
-		print("Error 001 - Operator(* or /) can't be at the beginning of the instruction")
+		return("Error 001 - Operator(* or /) can't be at the beginning of the instruction")
 
 
 	# -- Last value can not be any kind of operator --
 	if line[-1] in operator_alias:
-		print("Error 002 - Operator (* or /) can't be at the end of the instruction")
+		return("Error 002 - Operator (* or /) can't be at the end of the instruction")
 
 	return(str(run(line)))
 
