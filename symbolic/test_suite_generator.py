@@ -1,7 +1,7 @@
 from datetime import datetime
 import os, errno
 
-def test_suite_generator(filename, entry, generatedInputs, returnVals):
+def test_suite_generator(filename, allEntries, allGeneratedInputs, allReturnVals):
     # jteoh: need to ensure that the pyexz3 path is present - the following is copied from
     # pyexz3.py and adapted for this file. (2 dirnames because it's in a nested directory).
     # This is required in case the input file contains an import for symbolic types.
@@ -16,25 +16,28 @@ def test_suite_generator(filename, entry, generatedInputs, returnVals):
     file.write("import unittest\n")
     file.write("import sys\n")
 
-    # Add foldersto sys path so the file can be imported.
+    # Add folders to sys path so the file can be imported.
     file.write("sys.path.append(\"" + pyexz3_base_dir + "\")\n") # for symbolic decorators
     file.write("sys.path.append(\"" + directory + "\")\n") # for the actual input program/module
-    file.write("from " + filename + " import " + entry +"\n\n")
+
+    for entry in allEntries:
+        file.write("from " + filename + " import " + entry +"\n\n")
 
     file.write("class Test_" + filename + "(unittest.TestCase):\n\n")
 
     index = 0
-    for i, r in zip(generatedInputs, returnVals):
-        file.write("\tdef test" + str(index) + "(self):\n")
-        file.write("\t\tself.assertEqual(" + entry + "(")
-        write_comma = False
-        for arg in i:
-            if write_comma:
-                file.write(",")
-            write_comma = True
-            file.write(wrap(arg[1])) #  arg = (variable, value)
-        file.write("), " + wrap(r) + ")\n\n")
-        index+=1
+    for entry, generatedInputs, returnVals in zip(allEntries, allGeneratedInputs, allReturnVals):
+        for i, r in zip(generatedInputs, returnVals):
+            file.write("\tdef test" + str(index) + "(self):\n")
+            file.write("\t\tself.assertEqual(" + entry + "(")
+            write_comma = False
+            for arg in i:
+                if write_comma:
+                    file.write(",")
+                write_comma = True
+                file.write(wrap(arg[1])) #  arg = (variable, value)
+            file.write("), " + wrap(r) + ")\n\n")
+            index+=1
 
     file.write("if __name__ == '__main__':\n")
     file.write("\tunittest.main()\n")

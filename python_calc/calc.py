@@ -56,7 +56,7 @@ __version__ = "0.0.1"
 
 
 import operator
-import text2num
+import python_calc.text2num
 
 operator_alias = {
 	'+': ['plus','mas'],
