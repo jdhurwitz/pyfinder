@@ -291,14 +291,34 @@ def get_input(title):
 
 	return result
 
-@symbolic(a="2+5")
+"""
+make sure this is either operators or numbers
+takes in an input string and returns T/F
+"""
+def check_chars(line):
+	new_str = ""
+	ops  = ['+', '-', '/', '*']
+
+	for char in line:
+		if char not in ops and not char.isdigit():
+			return False
+
+	return True
+
+@symbolic(a="2+5-1")
 def calc(a):
 	#line = normalize_operators(a)
 	#line = normalize_numbers(line)
-	line = a.replace(' ','')
-	if len(line) == 0:
-		return ""
 
+	#TODO: add this back in -> removed for testing simplification
+	#line = a.replace(' ','')
+	line = a
+	if len(line) == 0:
+		return("Error: empty string")
+
+	#NOTE: this works as expected -> pyexz3 will test inputs that break this
+	if not check_chars(line):
+		return("Error: not all nums or operator")
 
 	# -- Validate --
 	# -- First value can only by (-) minus symbol or (+) plus symbol --
@@ -313,7 +333,7 @@ def calc(a):
 	return(str(run(line)))
 
 def expected_result():
-	return ["7"]
+	return ["6"]
 
 """
 if __name__=="__main__":
