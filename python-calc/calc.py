@@ -295,12 +295,19 @@ def get_input(title):
 make sure this is either operators or numbers
 takes in an input string and returns T/F
 """
+def isdigit_hack(char):
+	try: 
+		dig = int(char)
+		return True	
+	except ValueError:
+		return False
+
 def check_chars(line):
 	new_str = ""
-	ops  = ['+', '-', '/', '*']
+	acceptable_chars  = ['+', '-', '/', '*', '0','1','2','3','4', '5','6','7', '8', '9']
 
 	for char in line:
-		if char not in ops and not char.isdigit():
+		if char not in acceptable_chars:
 			return False
 
 	return True
