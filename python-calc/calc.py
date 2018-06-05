@@ -307,8 +307,10 @@ def check_chars(line):
 	new_str = ""
 	acceptable_chars  = ['+', '-', '/', '*', '0','1','2','3','4', '5','6','7', '8', '9']
 
-	for i in range(len(line)):
-		if line[i] not in acceptable_chars:
+	# for i in range(len(line)): # calls __len__ and __getitem__
+	# 	if line[i] not in acceptable_chars:
+	for char in line: # calls __iter__
+		if char not in acceptable_chars:
 			return False
 
 	return True

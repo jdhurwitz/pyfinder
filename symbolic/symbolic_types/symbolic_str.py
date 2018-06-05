@@ -44,6 +44,10 @@ class SymbolicStr(SymbolicObject, str):
         return self._do_sexpr([self, key], lambda x, y: str.__getitem__(x, y),
                               "getitem", SymbolicStr.wrap)
 
+    def __iter__(self):
+        for i in range(self.__len__()):
+            yield self.__getitem__(i)
+
 #  TODO: start with endswith, isalpha (scope these out)
 
     def find(self, findstr, beg=0):
