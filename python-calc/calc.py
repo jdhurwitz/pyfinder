@@ -296,18 +296,19 @@ make sure this is either operators or numbers
 takes in an input string and returns T/F
 """
 def isdigit_hack(char):
-	try: 
-		dig = int(char)
-		return True	
-	except ValueError:
-		return False
+	# try:
+	# 	dig = int(char)
+	# 	return True
+	# except ValueError:
+	# 	return False
+	char in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
 def check_chars(line):
 	new_str = ""
 	acceptable_chars  = ['+', '-', '/', '*', '0','1','2','3','4', '5','6','7', '8', '9']
 
-	for char in line:
-		if char not in acceptable_chars:
+	for i in range(len(line)):
+		if line[i] not in acceptable_chars:
 			return False
 
 	return True
@@ -316,6 +317,7 @@ def check_chars(line):
 def calc(a):
 	#line = normalize_operators(a)
 	#line = normalize_numbers(line)
+
 
 	#TODO: add this back in -> removed for testing simplification
 	#line = a.replace(' ','')
