@@ -8,6 +8,7 @@ from .z3_wrap import Z3Wrapper
 from .path_to_constraint import PathToConstraint
 from .invocation import FunctionInvocation
 from .symbolic_types import symbolic_type, SymbolicType
+import time
 
 log = logging.getLogger("se.conc")
 
@@ -44,7 +45,7 @@ class ExplorationEngine:
 		# make sure to remember the input that led to this constraint
 		constraint.inputs = self._getInputs()
 
-	def explore(self, max_iterations=0):
+	def explore(self, max_iterations=0, max_time=180.0):
 		self._oneExecution()
 		
 		iterations = 1
@@ -52,7 +53,15 @@ class ExplorationEngine:
 			log.debug("Maximum number of iterations reached, terminating")
 			return self.execution_return_values
 
+		#log start time
+		start_time = time.time()
+		end_time = start_time + max_time
+
 		while not self._isExplorationComplete():
+			#check if time limit is up
+			if time.time() >= end_time:
+				break
+
 			selected = self.constraints_to_solve.popleft()
 			if selected.processed:
 				continue

@@ -21,6 +21,7 @@ parser.add_option("-l", "--log", dest="logfile", action="store", help="Save log 
 parser.add_option("-s", "--start", dest="entry", action="store", help="Specify entry point", default="")
 parser.add_option("-g", "--graph", dest="dot_graph", action="store_true", help="Generate a DOT graph of execution tree")
 parser.add_option("-m", "--max-iters", dest="max_iters", type="int", help="Run specified number of iterations", default=0)
+parser.add_option("-t", "--max-time", dest="max_time", type="float", help="Max time to explore in seconds", default=180.0)
 parser.add_option("--cvc", dest="cvc", action="store_true", help="Use the CVC SMT solver instead of Z3", default=False)
 parser.add_option("--z3", dest="cvc", action="store_false", help="Use the Z3 SMT solver")
 parser.add_option("--rewrite_ast", dest="ast_rewrite_enabled", action="store_true", default=False,
@@ -51,7 +52,7 @@ print ("Exploring " + app.getFile() + "." + app.getEntry())
 result = None
 try:
 	engine = ExplorationEngine(app.createInvocation(), solver=solver)
-	generatedInputs, returnVals, path = engine.explore(options.max_iters)
+	generatedInputs, returnVals, path = engine.explore(options.max_iters, options.max_time)
 	# check the result
 	result = app.executionComplete(returnVals)
 
