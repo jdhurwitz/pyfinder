@@ -39,11 +39,16 @@ TEST_FILE=$(ls -t $DIR/generated_test_suites | head -n 1)
 coverage run --branch generated_test_suites/$TEST_FILE
 
 coverage html
+
+# reset pyenv version
+pyenv local $ORIG_PYENV_VERSION
+
+# pause for user input, eg so demo can show results
+read -n1 -r -p "Press any key to continue..."
+
 # for general viewing/high level view
 # open htmlcov/index.html 
 # However, we care mostly about the specific input file, so try to open that one.
 # ugly sed usage: replace / or . with _ for the filename.
 open htmlcov/$(sed -e 's/[\/.]/_/g' <<<"$FILE").html
 
-# reset pyenv version
-pyenv local $ORIG_PYENV_VERSION
