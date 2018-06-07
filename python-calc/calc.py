@@ -196,6 +196,8 @@ def run(string):
 
 	return result
 
+"""
+JH: commented out because this is no longer being used for the simplified case.
 def normalize_operators(line):
 	'''
 		Gets a simple string and tries to match with certain aliases
@@ -214,7 +216,11 @@ def normalize_operators(line):
 			line = line.replace(alias, symbol)
 
 	return line
+	
+"""
 
+"""
+JH: commented out because this is no longer being used for the simplified case.
 def normalize_numbers(line):
 	'''
 		Gets a simple string and tries to match with certain aliases
@@ -260,7 +266,10 @@ def normalize_numbers(line):
 			result += list_operations[position]
 
 	return result
+"""
 
+"""
+JH: this function was used to pull input from CLI - no longer needed because symbolic seed is entered by us.
 def get_input(title):
 	'''
 		Builds a list based on input from console. All input will be wrap in a list of 
@@ -292,16 +301,6 @@ def get_input(title):
 	return result
 
 """
-make sure this is either operators or numbers
-takes in an input string and returns T/F
-"""
-def isdigit_hack(char):
-	# try:
-	# 	dig = int(char)
-	# 	return True
-	# except ValueError:
-	# 	return False
-	char in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
 
 def check_chars(line):
 	new_str = ""

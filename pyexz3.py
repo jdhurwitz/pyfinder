@@ -67,7 +67,7 @@ try:
 		file.close()
 
 except ImportError as e:
-	# createInvocation can raise this
+
 	logging.error(e)
 	sys.exit(1)
 

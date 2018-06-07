@@ -1,9 +1,6 @@
 #!/bin/sh
 # This script serves more as a demonstration of how 
 # to combine pyexz3 with coverage tools
-# Assumes you have done the following:
-#    pyenv install 3.2.3
-#    pyenv install 3.6.5
 # Example command
 #    scripts/coverage.sh test/elseif.py
 # It does the following steps
