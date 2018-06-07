@@ -342,9 +342,6 @@ def calc(a):
 
 	return(str(run(line)))
 
-def expected_result():
-	return ["6"]
-
 """
 if __name__=="__main__":
 
