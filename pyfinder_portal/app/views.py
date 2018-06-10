@@ -6,7 +6,7 @@ from django.http import HttpResponse, Http404
 import os
 import base64
 
-python3_2_3 = "/Users/alex/.pyenv/versions/3.2.3/bin/python"
+python3_2_3 = os.path.expanduser("~/.pyenv/versions/3.2.3/bin/python")
 pyexz3 = "../pyexz3.py"
 file_py = "temp_file.py"
 test_suites = "generated_test_suites/"

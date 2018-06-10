@@ -259,3 +259,8 @@ htmlcov
 
 # omit pyenv specific version file
 .python-version
+
+
+# pyfinder portal
+pyfinder_portal/temp_file*
+virtualenv
