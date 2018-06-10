@@ -3,3 +3,4 @@ cd into pyfinder_portal
 go to app/views.py and change the hard coded python 3.2.3 file (hacky I know, but for the purposes of this project I'm too lazy to fix it)
 brew install graphviz 
 run "python manage.py runserver"
+go to http://127.0.0.1:8000/ in your favorite browser 
