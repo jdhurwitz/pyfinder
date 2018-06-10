@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Pyfinder - The PyExZ3 Wrapper</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"> {% load staticfiles %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'app/reset.css'%}">
+    <link rel="stylesheet" href="{% static 'app/style.css'%}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+    <script type="text/javascript" src="{% static 'app/jquery.hotkeys.js'%}"></script>
+    <script type="text/javascript" src="{% static 'app/jquery.isonscreen.js'%}"></script>
+    <script type="text/javascript" src="{% static 'app/coverage_html.js'%}"></script>
+    <link rel="stylesheet" href="{% static 'app/style_coverage.css'%}">
+    <script type="text/javascript">
+        function empty() {
+            var x = $('#file_name').val();
+            if (x == "") {
+                alert("Please upload a python file");
+                return false;
+            };
+        }
+        function scroll_to(clicked_link, nav_height) {
+            var element_class = clicked_link.attr('href');
+            var scroll_to = 0;
+            scroll_to = $(element_class).offset().top - nav_height;
+            if ($(window).scrollTop() != scroll_to) {
+                $('html, body').stop().animate({ scrollTop: scroll_to }, 500);
+            }
+        }
+        $(document).ready(function (e) {
+            $('#file_name').click(function () { $('#file_upload').trigger('click'); });
+            $('a.scrollTo').on('click', function (e) {
+                e.preventDefault();
+                scroll_to($(this), $('nav').height());
+            });
+            {% if is_post %}
+                scroll_to($('#output'), $('nav').height());
+            {% endif %}
+        }); 
+        $(document).ready(coverage.pyfile_ready);
+    </script>
+
+</head>
+<head>
+
+        <link rel="stylesheet" href="style.css" type="text/css">
+        
+        
+    </head>
+
+<body>
+    <div id="background">
+        <img src="{% static 'app/large-background.jpg'%}" />
+    </div>
+    <div id="wrapper">
+        <header>
+            <div id="social">
+                <div id="github">
+                    <iframe src="http://ghbtns.com/github-btn.html?user=jdhurwitz&repo=pyfinder&type=watch&count=true" allowtransparency="true"
+                        frameborder="0" scrolling="0" width="100" height="20"></iframe>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li>
+                        <a href="https://github.com/jdhurwitz/pyfinder/archive/master.zip">Download</a>
+                    </li>
+                    <li>
+                        <a class="scrollTo" href="#output">Output</a>
+                    </li>
+                    <li>
+                        <a class="scrollTo" href="#suite">Test Suite</a>
+                    </li>
+
+                    <li>
+                        <a class="scrollTo" href="#coverage">Coverage.py</a>
+                    </li>
+
+                    <li>
+                        <a class="scrollTo" href="#cfg">CFG</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <section id="welcome">
+            <span style="font-family: Pacifico; font-size: 68px; line-height:120px">PyFinder</span>
+            <h1>
+                A one-stop wrapper for everything PyExZ3.
+                <br /> Generate test suites, evaluate coverage, and more.
+            </h1>
+            <form method = "post" enctype="multipart/form-data">
+                {% csrf_token %} 
+                <div class="input-group" style="max-width: 500px; margin: auto;">
+                    <input id="file_name" name="file_name" type="text" class="form-control" placeholder="Click here to upload python file" readonly style="background-color: white; cursor: pointer;"></input>
+                    <input id="file_upload" name="file_upload" type="file" accept=".py" style="display:none" onchange="$('#file_name').val(this.files[0].name)">
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning" type="submit" onclick="return empty();">
+                            Run pyfinder!
+                        </button>
+                    </span>
+                </div>
+            </form>
+            <div id="download">
+                <a href="https://github.com/iamceege/tooltipster/archive/master.zip" class="btn-lg btn-warning">
+                    <i class="fa fa-cloud-download"></i> Download</a>
+            </div>
+        </section>
+
+        <section id="output" href="#output">
+            <h2>Output</h2>
+            {% if is_post %}
+            <h3 id="raw">1. Raw Output</h3>
+            <p>PyExZ3's basic output with no pyfinder extensions</p>
+            <pre class="console">{{out}}</pre>
+            <h3 id="suite">2. Test Suite</h3>
+            <p>Download this file <a href="/download?file_name={{file_name}}">here</a></p>
+            <pre class="prettyprint lang-python code">{{test_suite}}</pre>
+            <h3 id="coverage">3. Coverage.py</h3>
+            <p>HTML output from coverage.py</a></p>
+            <div class="coverage" id="coverage_frame">{% autoescape off %}{{ coverage_frame }}{% endautoescape %}</div>
+            <h3 id="cfg">4. CFG</h3>
+            <p>A control flow graph produced by PyExZ3</p>
+            <pre style="border: 1px solid lightgrey;"><img style="max-width: 100%;" src="data:image/png;base64,{{img}}"/></pre>
+            {% else %}
+            <pre class="console">C:\Users\PyFinder> Enter a python file and things will happen!</pre>
+            {% endif %}
+        </section>
+        <footer>
+            style.css adapted from <a style="text-decoration:underline; color: white;" href="http://iamceege.github.io/tooltipster/">tooltipster.com</a>
+        </footer>
+        
+    </div>
+</body>
+
+</html>

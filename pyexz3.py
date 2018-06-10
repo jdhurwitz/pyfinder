@@ -73,7 +73,7 @@ def run():
 		result = app.executionComplete(returnVals)
 
 		# output DOT graph
-		if (options.dot_graph):
+		if (options.dot_graph and app.getEntry() != "expected_result"):
 			file = open(filename+".dot","w")
 			file.write(path.toDot())	
 			file.close()
