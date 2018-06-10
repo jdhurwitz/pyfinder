@@ -68,7 +68,7 @@ def index(request):
     return render(request, "app/index.html", data)
 
 def download(request):
-    file_path = test_suites + request.GET['file_name'][:-3] + '_test_suite.py'
+    file_path = test_suites + 'temp_file_test_suite.py'
     if os.path.exists(file_path):
         with open(file_path, 'rb') as fh:
             response = HttpResponse(fh.read(), content_type="application/force-download")

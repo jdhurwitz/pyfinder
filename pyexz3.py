@@ -73,7 +73,7 @@ def run():
 		result = app.executionComplete(returnVals)
 
 		# output DOT graph
-		if (options.dot_graph and app.getEntry() != "expected_result"):
+		if (options.dot_graph):
 			file = open(filename+".dot","w")
 			file.write(path.toDot())	
 			file.close()
@@ -94,8 +94,9 @@ if options.evaluate_all_funcs:
 	functions_list = [o[0] for o in getmembers(module) if isfunction(o[1])]	
 	for function in functions_list:
 		del sys.modules[module_name]
-		options.entry = function
-		result = run()
+		if function != "expected_result":
+			options.entry = function
+			result = run()
 
 else:
 	result = run()
