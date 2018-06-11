@@ -29,7 +29,7 @@ class FunctionInvocation:
 	_INTEGER_SEEDS = [(0, SymbolicInteger), (1, SymbolicInteger), (-1, SymbolicInteger)]
 	_STRING_SEEDS = [("", SymbolicStr), ("A", SymbolicStr)]
 	_SEED_VALUES = {	"z3": _INTEGER_SEEDS,
-						"cvc": _STRING_SEEDS + _INTEGER_SEEDS
+						"cvc": _INTEGER_SEEDS + _STRING_SEEDS
 				   }
 
 	def initializeArgumentAssignmentIter(self, solver):
