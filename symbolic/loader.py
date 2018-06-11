@@ -7,7 +7,7 @@ import sys
 
 from symbolic.ast_rewriter.ast_rewriter import ASTRewriter
 from .invocation import FunctionInvocation
-from .symbolic_types import SymbolicInteger, getSymbolic
+from .symbolic_types import getSymbolic
 
 # The built-in definition of len wraps the return value in an int() constructor, destroying any symbolic types.
 # By redefining len here we can preserve symbolic integer types.
@@ -51,8 +51,8 @@ class Loader:
 
 	def getEntry(self):
 		return self._entryPoint
-	
-	def createInvocation(self):
+
+	def createInvocation(self, iter=0):
 		inv = FunctionInvocation(self._execute,self._resetCallback)
 		func = self.app.__dict__[self._entryPoint]
 		argspec = inspect.getargspec(func)
@@ -80,8 +80,7 @@ class Loader:
 					Loader._initializeArgumentSymbolic(inv, f, v, s)
 		for a in argspec.args:
 			if not a in inv.getNames():
-				# TODO: try with different seed values and data types! (currently fixed to 0)
-				Loader._initializeArgumentSymbolic(inv, a, 0, SymbolicInteger)
+				Loader._initializeUnfixedArgumentSymbolic(inv, a)
 		return inv
 
 
@@ -91,6 +90,9 @@ class Loader:
 
 	def _initializeArgumentSymbolic(inv,f,val,st):
 		inv.addArgumentConstructor(f, val, lambda n,v: st(n,v))
+
+	def _initializeUnfixedArgumentSymbolic(inv, f):
+		inv.addUnfixedArgument(f)
 
 	def executionComplete(self, return_vals):
 		if "expected_result" in self.app.__dict__:
