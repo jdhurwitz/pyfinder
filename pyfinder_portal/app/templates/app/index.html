@@ -101,9 +101,17 @@
                     <input id="file_upload" name="file_upload" type="file" accept=".py" style="display:none" onchange="$('#file_name').val(this.files[0].name)">
                     <span class="input-group-btn">
                         <button class="btn btn-warning" type="submit" onclick="return empty();">
-                            Run pyfinder!
+                            Run PyFinder!
                         </button>
                     </span>
+                </div>
+                <div>
+                    <label class="btn btn-secondary active">
+                        <input type="radio" name="solver" id="option1" value="z3" checked> Z3
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="solver" id="option2" value="cvc" > CVC4
+                    </label>
                 </div>
             </form>
             <div id="download">

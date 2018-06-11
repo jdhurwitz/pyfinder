@@ -12,6 +12,12 @@ file_py = "temp_file.py"
 test_suites = "generated_test_suites/"
 cov_html = "htmlcov/temp_file_py.html"
 
+def subprocess_cmd(command):
+    process = subprocess.Popen(command,stdout=subprocess.PIPE, shell=True)
+    proc_stdout = process.communicate()[0].decode("utf-8")
+    return proc_stdout
+
+
 
 def index(request):
     assert isinstance(request, HttpRequest)
@@ -24,10 +30,9 @@ def index(request):
         with open(file_py, 'wb+') as destination:
             for chunk in request.FILES['file_upload'].chunks():
                 destination.write(chunk)
-        proc = subprocess.Popen([python3_2_3, pyexz3, "--generate_test_suite", "--evaluate_all_funcs", "--cvc", "--graph", file_py], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = proc.communicate()
-        raw_out = out.decode("utf-8") 
-        err = err.decode("utf-8") 
+
+        raw_out = subprocess_cmd("source ../setup.sh; " + python3_2_3 + " " + pyexz3 + " --generate_test_suite --evaluate_all_funcs --" + request.POST["solver"] + " --graph " + file_py)
+
 
         file_path = test_suites + 'temp_file_test_suite.py'
         with open(file_path, 'r') as myfile:
