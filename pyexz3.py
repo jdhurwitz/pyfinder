@@ -12,8 +12,6 @@ from symbolic.test_suite_generator import test_suite_generator
 from inspect import getmembers, isfunction
 import importlib
 
-print("PyExZ3 (Python Exploration with Z3)")
-
 sys.path = [os.path.abspath(os.path.join(os.path.dirname(__file__)))] + sys.path
 
 usage = "usage: %prog [options] <path to a *.py file>"
@@ -45,6 +43,8 @@ if len(args) == 0 or not os.path.exists(args[0]):
 	sys.exit(1)
 
 solver = "cvc" if options.cvc else "z3"
+
+print("PyExZ3 (Python Exploration with %s)" % solver.upper())
 
 filename = os.path.abspath(args[0])
 
