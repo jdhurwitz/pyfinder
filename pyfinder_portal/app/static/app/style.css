@@ -12,6 +12,11 @@
 	font-style: normal;
 }
 
+#solver label:hover {
+	color: white;
+	text-decoration: underline;
+}
+
 ::selection {
 	background: #f0ad4e;
 	color: #fff;

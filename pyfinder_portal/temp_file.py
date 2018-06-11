@@ -1,29 +1,20 @@
-# Copyright: see copyright.txt
+from lib.bsearch import *
 
-# Test if engine explores all paths
+array = [ 0, 4, 6, 95, 430, 4944, 119101 ]
 
-def elseif(in1):
-    if in1 ==  0:
-        return 0
-    elif in1 == 1:
-        return 1
-    elif in1 == 2:
-        return 2
-    elif in1 == 3:
-        return 3
-    elif in1 == 4:
-        return 4
-    elif in1 == 5:
-        return 5
-    elif in1 == 6:
-        return 6
-    elif in1 == 7:
-        return 7
-    elif in1 == 8:
-        return 8
-    else:
-        return 9
-    return 10
+def binary_search(k):
+	i = bsearch(array,k)
+	if(i>=0):
+		if (not array[i]==k):
+			return "ERROR"
+		else:
+			return str(k)
+	else:
+		if (k in array):
+			return "ERROR"
+		else:
+			return "NOT_FOUND"
 
-def expected_result():
-	return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+def expected_result(): 
+	return [str(i) for i in array] + [ "NOT_FOUND" for i in range(len(array)+1) ]
+

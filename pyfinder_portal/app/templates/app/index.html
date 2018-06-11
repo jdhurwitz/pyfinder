@@ -105,12 +105,12 @@
                         </button>
                     </span>
                 </div>
-                <div>
+                <div id="solver">
                     <label class="btn btn-secondary active">
-                        <input type="radio" name="solver" id="option1" value="z3" checked> Z3
+                        <input type="radio" name="solver" id="option1" value="z3" {% if solver != "cvc" %} checked {% endif %}> Z3
                     </label>
                     <label class="btn btn-secondary">
-                        <input type="radio" name="solver" id="option2" value="cvc" > CVC4
+                        <input type="radio" name="solver" id="option2" value="cvc" {% if solver == "cvc" %} checked {% endif %}> CVC4
                     </label>
                 </div>
             </form>
