@@ -133,10 +133,10 @@ if options.evaluate_all_funcs:
 	sys.path.append(directory)
 	module_name = os.path.basename(filename)[:-3]
 	module = importlib.import_module(module_name)
-	functions_list = [o[0] for o in getmembers(module) if isfunction(o[1])]	
+	functions_list = [o[0] for o in getmembers(module) if isfunction(o[1])]
 	for function in functions_list:
-		del sys.modules[module_name]
-		if function != "expected_result":
+		if function != "expected_result" and function != "expected_result_set":
+			del sys.modules[module_name]
 			options.entry = function
 			result = run()
 

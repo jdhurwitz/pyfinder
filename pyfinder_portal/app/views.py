@@ -13,8 +13,9 @@ test_suites = "generated_test_suites/"
 cov_html = "htmlcov/temp_file_py.html"
 
 def subprocess_cmd(command):
-    process = subprocess.Popen(command,stdout=subprocess.PIPE, shell=True)
-    proc_stdout = process.communicate()[0].decode("utf-8")
+    process = subprocess.Popen(command,stdout=subprocess.PIPE, stderr=subprocess.PIPE,shell=True)
+    proc = process.communicate()
+    proc_stdout = proc[0].decode("utf-8") + proc[1].decode("utf-8")
     return proc_stdout
 
 
@@ -26,12 +27,13 @@ def index(request):
     data["out"] = "\n\n\n\n"
     data["is_post"] = False
     if request.method == 'POST':
+        orig_name = request.POST['file_name'][:-3]
 
         with open(file_py, 'wb+') as destination:
             for chunk in request.FILES['file_upload'].chunks():
                 destination.write(chunk)
 
-        raw_out = subprocess_cmd("source ../setup.sh; " + python3_2_3 + " " + pyexz3 + " --generate_test_suite --evaluate_all_funcs --" + request.POST["solver"] + " --graph " + file_py)
+        raw_out = subprocess_cmd("source ../setup.sh; " + python3_2_3 + " " + pyexz3 + " --generate_test_suite --start " + orig_name +" --" + request.POST["solver"] + " --graph " + file_py)
 
 
         file_path = test_suites + 'temp_file_test_suite.py'
