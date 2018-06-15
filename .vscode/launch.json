@@ -9,9 +9,11 @@
             "type": "python",
             "request": "launch",
             "args": [
-                "--disable_ast_rewrite",
+                "--evaluate_all_funcs",
                 "--generate_test_suite",
-                "FILE.py",
+                "--cvc",
+                "--graph",
+                "pyfinder_portal/temp_file.py",
                 
             ],
             "program": "${workspaceFolder}/pyexz3.py"

@@ -1,0 +1,12 @@
+0.1 Install pyenv if you haven't already. Make sure to have 3.2.3 and 3.6.5 installed by default. 
+0.2 Install graphviz (brew install graphviz).
+0.3 Make sure the following files exist (they can be empty): pyfinder_portal/temp_file.{png,py,py.dot}
+1. Start in the PyExZ3 base directory.
+2. `pyenv local 3.6.5`
+3. `python -m venv ./virtualenv`
+4. `source ./virtualenv/bin/activate`
+5. `pip install django` (this will be in the virtual environment)
+6. `cd pyfinder_portal`
+6.1. If pyenv is not installed in the default ~/.pyenv directory, edit app/views.py as needed.
+7. `python manage.py runserver`
+8. `open http://127.0.0.1:8000/` or open the url in your browser.

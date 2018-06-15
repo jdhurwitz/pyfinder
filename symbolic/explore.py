@@ -13,11 +13,12 @@ import time
 log = logging.getLogger("se.conc")
 
 class ExplorationEngine:
-	def __init__(self, funcinv, solver="z3"):
+	def __init__(self, funcinv, solver="z3", iter=0):
 		self.invocation = funcinv
 		# the input to the function
 		self.symbolic_inputs = {}  # string -> SymbolicType
 		# initialize
+		funcinv.initializeUnfixedArguments(solver) # solver helps determine seed value options
 		for n in funcinv.getNames():
 			self.symbolic_inputs[n] = funcinv.createArgumentValue(n)
 
