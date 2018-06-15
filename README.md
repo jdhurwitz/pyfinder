@@ -1,7 +1,8 @@
-PyExZ3
+PyFinder
 ======
+PyFinder is an extension of PyExZ3 with added support and automatic test suite generation.
 
-###Python Exploration with Z3
+### Python Exploration with Z3
 
 This code is a substantial rewrite of the NICE project's
 (http://code.google.com/p/nice-of/) symbolic execution engine for
@@ -31,7 +32,7 @@ execution; no AST rewriting or bytecode instrumentation is required,
 This significantly improves the robustness and portability of **PyExZ3**, 
 as well as reducing its size.
 
-###Setup instructions:
+### Setup instructions:
 
 - Make sure that you use Python 32-bit (64-bit) if-and-only-if you use the Z3 32-bit (64-bit) binaries. 
 Testing so far has been on Python 3.2.3 and 32-bit.
@@ -65,6 +66,14 @@ where `MAIN` is the name of a  function in `FILE`:
 analyzing functions with loops and/or recursion. Specify a bound using the `max-iters` flag:
 
   - pyexz3 `--max-iters=42` FILE.py
+
+- **Bounding the runtime is another way of limiting the exploration when there are loops and/or recursion.
+Add the flag '-t' followed by a float value to specify the number of seconds to limit program runtime.
+For example, if you wanted to bound the runtime to 3 minutes:
+
+  - pyexz3 FILE.py -t 180
+
+
 
 - **Arguments to starting function**: by default, pyexz3 associates a symbolic integer
 (with initial value 0) for each parameter of the starting function. Import from
