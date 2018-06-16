@@ -43,6 +43,7 @@ Testing so far has been on Python 3.2.3 and 32-bit.
 - MacOS: setup.sh for Homebrew default locations for Python and Z3; see end for MacOS specific instructions
 - Optional:
 -- install GraphViz utilities (http://graphviz.org/)
+-- Web Portal: see pyfinder_portal/setup.txt
 
 ### Check that everything works:
 
