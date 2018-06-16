@@ -82,8 +82,12 @@ analyzing functions with loops and/or recursion. Specify a bound using the `max-
 
   - pyexz3 `--max-iters=42` FILE.py
 
+
+### PyFinder Extensions
+
 - **Bounding the runtime (PyFinder)**: is another way of limiting the exploration when there are loops and/or recursion.
 Add the flag '-t' or `--max-time` followed by a float value to specify the number of seconds to limit program runtime.
+
 For example, if you wanted to bound the runtime to 3 minutes:
 
   - pyexz3 FILE.py `-t 180`
